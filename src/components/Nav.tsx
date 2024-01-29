@@ -3,7 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 
 const links = [
   {
-    path: 'home',
+    path: '/',
     name: 'Home',
   },
   // {

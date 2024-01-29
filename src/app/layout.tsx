@@ -4,7 +4,7 @@ import AuthSessionProvider from "@/components/AuthSessionProvider";
 import { getServerSession } from "next-auth";
 import { Inter } from "next/font/google";
 
-import Header from "@/app/Header";
+// import Header from "@/app/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -1,30 +1,36 @@
 "use client";
 
-import { Artist, ArtistSearchResult, Artists, SearchResults, SpotifyApi } from "@spotify/web-api-ts-sdk"; // use "@spotify/web-api-ts-sdk" in your own project
+import { SearchResults, SpotifyApi } from "@spotify/web-api-ts-sdk"; // use "@spotify/web-api-ts-sdk" in your own project
 import sdk from "@/lib/spotify-sdk/ClientInstance";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import Video from "@/components/ReactPlayer";
 
 export default function Home() {
   const session = useSession();
-  // console.log(session)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(()=> {
+    setIsClient(true)
+  },[])
 
   if (!session || session.status !== "authenticated") {
     return (
       // use apis artist info
-      <div className="h-screen flex flex-col items-center justify-center">
-        <h1>ARTIST HOMEPAGE</h1>
-        <button onClick={() => signIn("spotify")}>Sign in with Spotify</button>
+      <div className="relative h-screen flex flex-col items-center">
+        {isClient && <Video />}
+        <button className="absolute top-3/4 btn btn-accent" onClick={() => signIn("spotify")}>Sign in with Spotify</button>
       </div>
     );
   }
 
   return (
     <div>
-      {/* <p>Logged in as {session.data.user?.name}</p> */}
-      <button onClick={() => signOut()}>Sign out</button>
       <SpotifySearch sdk={sdk} />
+      <p>Logged in as {session.data.user?.name}</p>
+      <button onClick={() => signOut()}>Sign out</button>
     </div>
   );
 }
@@ -43,19 +49,24 @@ console.log(results)
   // generate a table for the results
   const albums = results.albums?.items.slice(0, 9).map((item) => {
     return (
-      <div key={item.id}>
-        <div>{item.name}</div>
+        <Link
+        key={item.id} 
+        className="carousel-item"
+        href={item.external_urls.spotify}>
+        {item.name}
         <Image 
+          className="rounded-box"
           src={item.images[1].url} 
           height={100} 
           width={100}
           alt={item.name}></Image>
-      </div>
+      </Link>
+      
     );
   });
 
   return (
-    <div className="h-screen grid items-center justify-center">
+    <div className="carousel carousel-center max-w-md p-4 space-x-4 bg-neutral rounded-box">
     {albums}
     </div>
   );
