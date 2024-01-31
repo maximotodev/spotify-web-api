@@ -10,6 +10,7 @@ import Video from "@/components/ReactPlayer";
 
 export default function Home() {
   const session = useSession();
+  // signIn('spotify')
   const [isClient, setIsClient] = useState(false)
 
   useEffect(()=> {
@@ -42,11 +43,13 @@ function SpotifySearch({ sdk }: { sdk: SpotifyApi }) {
     (async () => {
       const data = await sdk.search("alyssa grey", ["album","artist",]);
       setResults(() => data);
-      // console.log(data);
+      console.log(data);
     })();
   }, [sdk]);
+  
 console.log(results)
   // generate a table for the results
+  // const artist = results
   const albums = results.albums?.items.slice(0, 9).map((item) => {
     return (
         <Link
