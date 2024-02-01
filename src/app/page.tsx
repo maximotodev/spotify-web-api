@@ -10,9 +10,7 @@ import Video from "@/components/ReactPlayer";
 
 export default function Home() {
   const session = useSession();
-  // signIn('spotify')
   const [isClient, setIsClient] = useState(false)
-
   useEffect(()=> {
     setIsClient(true)
   },[])
@@ -37,7 +35,7 @@ export default function Home() {
 }
 
 function SpotifySearch({ sdk }: { sdk: SpotifyApi }) {
-  const [results, setResults] = useState<SearchResults>({} as SearchResults);
+  const [results, setResults] = useState<SearchResults<["album"]>>({} as SearchResults<["album", "artist"]>);
 
   useEffect(() => {
     (async () => {
@@ -46,7 +44,7 @@ function SpotifySearch({ sdk }: { sdk: SpotifyApi }) {
       console.log(data);
     })();
   }, [sdk]);
-  
+
 console.log(results)
   // generate a table for the results
   // const artist = results
